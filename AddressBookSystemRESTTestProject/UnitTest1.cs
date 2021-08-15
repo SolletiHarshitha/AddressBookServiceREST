@@ -1,17 +1,33 @@
-﻿using Newtonsoft.Json;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using AddressBookSystemREST;
 using RestSharp;
-using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace AddressBookSystemREST
+namespace AddressBookSystemRESTTestProject
 {
-    class Program
+    [TestClass]
+    public class UnitTest1
     {
-        static void Main(string[] args)
+        AddressBookWebService webService;
+        [TestInitialize]
+        public void SetUp()
         {
-            Console.WriteLine("Address Book System Using REST API");
+            webService = new AddressBookWebService();
+        }
+        [TestMethod]
+        public void GetCountOfContacts()
+        {
+            IRestResponse response = webService.GetContactList();
+            //Checking the status code
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+            List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
+            Assert.AreEqual(2, responseData.Count);
+        }
+        [TestMethod]
+        public void AddMultipleContactsByCallingPOSTApi()
+        {
             List<ContactDetails> contactList = new List<ContactDetails>();
-            AddressBookWebService webService = new AddressBookWebService();
             ContactDetails details = new ContactDetails();
             ContactDetails details2 = new ContactDetails();
 
@@ -36,9 +52,10 @@ namespace AddressBookSystemREST
 
             webService.AddMultiplecontacts(contactList);
             IRestResponse response = webService.GetContactList();
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
             //Deserialize JSON object
             List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
-            Console.WriteLine("Count of contacts : " + responseData.Count);
+            Assert.AreEqual(4,responseData.Count);
         }
     }
 }
