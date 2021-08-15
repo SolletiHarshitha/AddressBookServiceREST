@@ -38,6 +38,7 @@ namespace AddressBookSystemREST
             IRestResponse response = client.Execute(request);
             return response;
         }
+        //Add Multiple Contacts
         public void AddMultiplecontacts(List<ContactDetails> contactList)
         {
             RestRequest request = new RestRequest("/contacts", Method.POST);
@@ -46,6 +47,7 @@ namespace AddressBookSystemREST
                 AddContact(contact);
             }
         }
+        //Update Contact
         public IRestResponse UpdateContact(ContactDetails details)
         {
             RestRequest request = new RestRequest("/contacts/2", Method.POST);
@@ -59,6 +61,13 @@ namespace AddressBookSystemREST
             json.Add("PhoneNumber", details.PhoneNumber);
             json.Add("Email", details.Email);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return response;
+        }
+        //Delete Contact
+        public IRestResponse DeleteContact()
+        {
+            RestRequest request = new RestRequest("/contacts/1", Method.DELETE);
             IRestResponse response = client.Execute(request);
             return response;
         }

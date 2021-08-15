@@ -14,16 +14,10 @@ namespace AddressBookSystemREST
             AddressBookWebService webService = new AddressBookWebService();
             ContactDetails details = new ContactDetails();
 
-            details.FirstName = "Pavani";
-            details.LastName = "P";
-            details.Address = "CMBT";
-            details.City = "Chennai";
-            details.State = "Tamil Nadu";
-            details.Zip = 600032;
-            details.PhoneNumber = 9883839229;
-            details.Email = "pavani@gmail.com";
+            //Delete contact
+            webService.DeleteContact();
 
-            IRestResponse response = webService.UpdateContact(details);
+            IRestResponse response = webService.GetContactList();
             //Deserialize JSON object
             List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
             Console.WriteLine("Count of contacts : " + responseData.Count);

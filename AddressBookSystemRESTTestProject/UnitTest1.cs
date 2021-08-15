@@ -15,6 +15,9 @@ namespace AddressBookSystemRESTTestProject
         {
             webService = new AddressBookWebService();
         }
+        /// <summary>
+        /// Retrieve count of contacts
+        /// </summary>
         [TestMethod]
         public void GetCountOfContacts()
         {
@@ -24,6 +27,9 @@ namespace AddressBookSystemRESTTestProject
             List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
             Assert.AreEqual(2, responseData.Count);
         }
+        /// <summary>
+        /// Add multiple contacts
+        /// </summary>
         [TestMethod]
         public void AddMultipleContactsByCallingPOSTApi()
         {
@@ -57,6 +63,9 @@ namespace AddressBookSystemRESTTestProject
             List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
             Assert.AreEqual(4,responseData.Count);
         }
+        /// <summary>
+        /// Update contact
+        /// </summary>
         [TestMethod]
         public void UpdateContactByCallingPUTApi()
         {
@@ -72,8 +81,18 @@ namespace AddressBookSystemRESTTestProject
             IRestResponse response = webService.UpdateContact(details);
             var res = JsonConvert.DeserializeObject<ContactDetails>(response.Content);
             Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
-
-
+        }
+        /// <summary>
+        /// Delete contact
+        /// </summary>
+        [TestMethod]
+        public void DeleteContactByCallingDeleteApi()
+        {
+            IRestResponse res = webService.DeleteContact();
+            IRestResponse response = webService.GetContactList();
+            List<ContactDetails> result = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+            Assert.AreEqual(3, result.Count);
         }
     }
 }
