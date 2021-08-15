@@ -17,9 +17,34 @@ namespace AddressBookSystemREST
         //Retrieve Contacts
         public IRestResponse GetContactList()
         {
-            RestRequest request = new RestRequest("/AddressBook",Method.GET);
+            RestRequest request = new RestRequest("/contacts",Method.GET);
             IRestResponse response = client.Execute(request);
             return response;
+        }
+        //Add Contact
+        public IRestResponse AddContact(ContactDetails details)
+        {
+            RestRequest request = new RestRequest("/contacts", Method.POST);
+            JsonObject json = new JsonObject();
+            json.Add("FirstName", details.FirstName);
+            json.Add("LastName", details.LastName);
+            json.Add("Address", details.Address);
+            json.Add("City", details.City);
+            json.Add("State", details.State);
+            json.Add("Zip", details.Zip);
+            json.Add("PhoneNumber", details.PhoneNumber);
+            json.Add("Email", details.Email);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return response;
+        }
+        public void AddMultiplecontacts(List<ContactDetails> contactList)
+        {
+            RestRequest request = new RestRequest("/contacts", Method.POST);
+            foreach(ContactDetails contact in contactList)
+            {
+                AddContact(contact);
+            }
         }
     }
 }
