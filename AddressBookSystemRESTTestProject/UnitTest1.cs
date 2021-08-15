@@ -57,5 +57,23 @@ namespace AddressBookSystemRESTTestProject
             List<ContactDetails> responseData = JsonConvert.DeserializeObject<List<ContactDetails>>(response.Content);
             Assert.AreEqual(4,responseData.Count);
         }
+        [TestMethod]
+        public void UpdateContactByCallingPUTApi()
+        {
+            ContactDetails details = new ContactDetails();
+            details.FirstName = "Pavani";
+            details.LastName = "P";
+            details.Address = "CMBT";
+            details.City = "Chennai";
+            details.State = "Tamil Nadu";
+            details.Zip = 600032;
+            details.PhoneNumber = 9883839229;
+            details.Email = "pavani@gmail.com";
+            IRestResponse response = webService.UpdateContact(details);
+            var res = JsonConvert.DeserializeObject<ContactDetails>(response.Content);
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+
+
+        }
     }
 }

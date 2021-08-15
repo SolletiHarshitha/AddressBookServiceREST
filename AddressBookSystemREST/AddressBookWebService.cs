@@ -46,5 +46,21 @@ namespace AddressBookSystemREST
                 AddContact(contact);
             }
         }
+        public IRestResponse UpdateContact(ContactDetails details)
+        {
+            RestRequest request = new RestRequest("/contacts/2", Method.POST);
+            JsonObject json = new JsonObject();
+            json.Add("FirstName", details.FirstName);
+            json.Add("LastName", details.LastName);
+            json.Add("Address", details.Address);
+            json.Add("City", details.City);
+            json.Add("State", details.State);
+            json.Add("Zip", details.Zip);
+            json.Add("PhoneNumber", details.PhoneNumber);
+            json.Add("Email", details.Email);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return response;
+        }
     }
 }
